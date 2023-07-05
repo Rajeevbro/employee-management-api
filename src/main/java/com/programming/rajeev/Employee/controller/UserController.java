@@ -7,6 +7,8 @@ import com.programming.rajeev.Employee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin
@@ -24,5 +26,20 @@ public class UserController {
             public UserRegisterLoginResponse loginUser(@RequestBody LoginDto loginDto)
     {
         return userService.loginUser(loginDto);
+    }
+
+
+    @GetMapping("/user")
+    public List<User> getAllUser()
+    {
+        return userService.getAllUser();
+
+    }
+
+    @DeleteMapping("/user/remove/{id}")
+    public String removeUser(@PathVariable("id") Long id)
+    {
+        return userService.removeUser(id);
+
     }
 }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor@NoArgsConstructor
 @Builder
 public class UserRegisterLoginResponse {
+    private String userName;
 
     private  String token;
 }

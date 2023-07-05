@@ -13,9 +13,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-@Repository
+import java.util.List;
+
+@Service
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
@@ -36,7 +39,8 @@ public class UserServiceImpl implements UserService {
         UserRegisterLoginResponse token = new UserRegisterLoginResponse();
         System.out.println(user.getUserName());
         token.setToken(jwtService.createToken(user.getUserName()));
-       return token;
+        token.setUserName(user.getUserName());
+        return token;
     }
 
     @Override
@@ -46,9 +50,21 @@ public class UserServiceImpl implements UserService {
         if(authentication.isAuthenticated())
         {
             UserRegisterLoginResponse token = new UserRegisterLoginResponse();
+            token.setUserName(loginDto.getUserName());
             token.setToken(jwtService.createToken(loginDto.getUserName()));
             return token;
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND,"userName or IncorrectPassword");
+    }
+
+    @Override
+    public List<User> getAllUser() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public String removeUser(Long id) {
+        userRepository.deleteById(id);
+        return "success";
     }
 }
